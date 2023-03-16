@@ -8,7 +8,7 @@ fig = figure('position', [466 129 759 846]);
 
 Coercive = [];
 Span = [];
-for i = 1:1
+for i = 1:87
 
 Loops_loc = Loops{i};
 
@@ -17,7 +17,7 @@ Loops_loc = Loops{i};
 feloop = Loops_loc(3);
 
 feloop = feloop_swap_p_n(feloop);
-corrected = feloop_processing(feloop, true, fig);
+corrected = feloop_processing(feloop, fig);
 
 Span(i) = corrected.P.p(end) - corrected.P.p(1);
 
@@ -27,7 +27,7 @@ xline(Coercive(i))
 
 title(num2str(Loop_temp(i)))
 
-pause(0.25)
+% pause(0.25)
 
 end
 

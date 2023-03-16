@@ -1,11 +1,13 @@
 
-function corrected_loop = feloop_processing(feloop, Draw, fig)
+function corrected_loop = feloop_processing(feloop, fig)
 
-if Draw
-    if isempty(fig)
-        figure('position', [466 129 759 846])
-    end
+
+if ~isempty(fig) && class(fig) == "matlab.ui.Figure" && isvalid(fig)
+    Draw = true;
+else
+    Draw = false;
 end
+
 
 
 Sample.h = 85e-6; %m
@@ -65,7 +67,7 @@ if Draw
     plot(E.p, P.p, 'r', 'linewidth', 2)
     plot(E.n, P.n, 'b', 'linewidth', 2)
     grid on
-%     ylim([-40 40])
+    ylim([-40 40])
     xlim([-35 35])
 
     xlabel('E, kV/cm', 'fontsize', 12)

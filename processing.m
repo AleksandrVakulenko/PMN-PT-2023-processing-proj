@@ -1,6 +1,5 @@
 
-
-
+%Some comments
 clc
 
 
@@ -8,7 +7,7 @@ fig = figure('position', [466 129 759 846]);
 
 Coercive = [];
 Span = [];
-for i = 1:1
+for i = 1:87
 
 Loops_loc = Loops{i};
 
@@ -27,7 +26,7 @@ xline(Coercive(i))
 
 title(num2str(Loop_temp(i)))
 
-pause(0.25)
+% pause(0.25)
 
 end
 

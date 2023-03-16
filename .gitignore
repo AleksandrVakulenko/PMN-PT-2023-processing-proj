@@ -3,3 +3,6 @@
 
 *.asv
 *.mat
+
+!OLD_data_2Hz.mat
+!PT1000_15.03.2023.mat

@@ -9,7 +9,7 @@ else
 end
 
 
-
+%TODO: load sample struct from feloop
 Sample.h = 85e-6; %m
 Sample.s = 0.29/1000^2; %m^2
 
@@ -44,18 +44,21 @@ if Draw
     grid on
 end
 
-P.p = P.p - P.p(end)/2;
-P.n = P.n - P.n(end)/2;
+%loop align
+Bias = (P.p(end) - P.p(1))/2;
+P.p = P.p - Bias;
+Bias = (P.n(end) - P.n(1))/2;
+P.n = P.n - Bias;
 
-% units E (was V)
+
+% units E[kV/cm] (was V[V])
 E.p = (E.p/1000) / (Sample.h/0.01);
 E.n = (E.n/1000) / (Sample.h/0.01);
-
-% units P (was Q)
-cap = 100e-9; %F
+% units P[uC/cm^2] (was Q[C])
 P.p = (P.p*1e6)/(Sample.s*100*100); %P [uC/cm2]
 P.n = (P.n*1e6)/(Sample.s*100*100); %P [uC/cm2]
 
+% FIXME: put all misc fields from input loop
 corrected_loop.E = E;
 corrected_loop.P = P;
 
@@ -67,7 +70,7 @@ if Draw
     plot(E.p, P.p, 'r', 'linewidth', 2)
     plot(E.n, P.n, 'b', 'linewidth', 2)
     grid on
-    ylim([-40 40])
+    ylim([-40 40]) %FIXME: magic constants
     xlim([-35 35])
 
     xlabel('E, kV/cm', 'fontsize', 12)

@@ -1,10 +1,11 @@
 
-
+% TODO: add version to feloop struct
+%TODO: include sample struct into feloop 
 
 clc
 
 
-fig = figure('position', [466 129 759 846]);
+fig = figure('position', [443 80 620 685]);
 
 Coercive = [];
 Span = [];
@@ -34,6 +35,7 @@ end
 
 
 %%
+load('OLD_data_2Hz.mat')
 
 range = Loop_temp > 130;
 

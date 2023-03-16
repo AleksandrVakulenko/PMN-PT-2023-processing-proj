@@ -1,7 +1,4 @@
 
-%Some comments
-clc
-
 
 fig = figure('position', [466 129 759 846]);
 
@@ -13,7 +10,7 @@ Loops_loc = Loops{i};
 
 
 
-feloop = Loops_loc(3);
+feloop = Loops_loc(1);
 
 feloop = feloop_swap_p_n(feloop);
 corrected = feloop_processing(feloop, true, fig);

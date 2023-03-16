@@ -11,7 +11,7 @@ end
 % P = feloop.P.p;
 E = feloop.E.p(1:end/2); 
 P = feloop.P.p(1:end/2);
- 
+
 Min_P = prctile(P, 1); %FIXME: magic constant
 P_p_shift = P - Min_P; %Сдвигаем началом к нуля
 

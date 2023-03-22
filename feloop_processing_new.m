@@ -1,6 +1,5 @@
-
-function corrected_loop = feloop_processing(feloop, Draw, fig)
-
+function corrected_loop = feloop_processing_new(feloop, Draw, fig)
+%Вычитает второй проход из первого
 if Draw
     if isempty(fig)
         figure('position', [466 129 759 846])
@@ -12,10 +11,10 @@ Sample.h = 85e-6; %m
 Sample.s = 0.29/1000^2; %m^2
 
 %Первичная, вторичная и итоговая петли для положительной полупетли
-Einit = feloop.init.E.p;
-Pinit = feloop.init.P.p;
-Eref = feloop.ref.E.p;
-Pref = feloop.ref.P.p;
+Einit = feloop.feloop.init.E.p;
+Pinit = feloop.feloop.init.P.p;
+Eref = feloop.feloop.ref.E.p;
+Pref = feloop.feloop.ref.P.p;
 E.p = Einit;
 P.p = Pinit - Pref;
 
@@ -29,10 +28,10 @@ if Draw
 end
 
 %Первичная, вторичная и итоговая петли для отрицательной полупетли
-Einit = feloop.init.E.n;
-Pinit = feloop.init.P.n;
-Eref = feloop.ref.E.n;
-Pref = feloop.ref.P.n;
+Einit = feloop.feloop.init.E.n;
+Pinit = feloop.feloop.init.P.n;
+Eref = feloop.feloop.ref.E.n;
+Pref = feloop.feloop.ref.P.n;
 E.n = Einit;
 P.n = Pinit - Pref;
 
@@ -59,8 +58,6 @@ P.n = (P.n*1e6)/(Sample.s*100*100); %P [uC/cm2]
 %Привычная структура петли
 corrected_loop.E = E;
 corrected_loop.P = P;
-% [n, p] = getting_percentile_3(corrected_loop, 0.5);
-
 
 
 if Draw
@@ -70,9 +67,11 @@ if Draw
     set(gca, 'fontsize', 11)
     plot(E.p, P.p, 'r', 'linewidth', 2)
     plot(E.n, P.n, 'b', 'linewidth', 2)
+    
     grid on
-%     ylim([-40 40])
-%     xlim([-35 35])
+    ylim([-80 80])
+    xlim([-55 55])
+  
 
     xlabel('E, kV/cm', 'fontsize', 12)
     ylabel('P, uC/cm^2', 'fontsize', 12)

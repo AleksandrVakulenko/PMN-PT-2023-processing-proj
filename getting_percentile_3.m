@@ -10,10 +10,10 @@ end
 E.p = feloop.E.p;
 P.p = feloop.P.p;
 
-E.n = feloop.E.n;
-P.n = feloop.P.n;
+E.n = -feloop.E.n; %Переворачиваем отрицательную ветвь, чтобы получить верную процентиль
+P.n = -feloop.P.n;
 Prcn_right = aprox(E.p, P.p, Prcn);
-Prcn_left = aprox(E.n, P.n, Prcn);
+Prcn_left = -aprox(E.n, P.n, Prcn);
 
 end
 

@@ -1,49 +1,47 @@
 
-
+% TODO: add version to feloop struct
+%TODO: include sample struct into feloop 
 
 clc
 addpath('include\');
 
-fig = figure('position', [466 129 759 846]);
+fig = figure('position', [443 80 620 685]);
 
 Coercive = [];
 Span = [];
+
+for i = 1:87
+
+Loops_loc = Loops{i};
+
 
 
 % Temp_range = find(Loop_temp > 100 & Loop_temp < 140);
 % Temp_range = 1:87;
 Temp_range = 1:numel(Loops);
 
-for freq_N = 1%1:20
-    freq_N
-    for i = Temp_range
-    
-    Loops_loc = Loops{i};
-%     Loops_loc = Loops(i);
-    
-    % HERE USE VERSION CONTROL
-    feloop = Loops_loc(freq_N); % OLD CODE
-%     feloop_full = Loops_loc(freq_N); % NEW CODE
-%     feloop = feloop_full.feloop; % NEW CODE
-    
-    feloop = feloop_swap_p_n(feloop);
-    corrected = feloop_processing(feloop, true, fig);
-    
-    Span(i, freq_N) = corrected.P.p(end) - corrected.P.p(1);
-    
-    Coercive(i, freq_N) = getting_percentile_2(corrected, 0.5);
-    xline(Coercive(i, freq_N))
-    
-    
-    title(num2str(Loop_temp(i)))
-    
-    pause(0.1)
-    
-    end
+
+feloop = Loops_loc(3);
+
+feloop = feloop_swap_p_n(feloop);
+corrected = feloop_processing(feloop, fig);
+
+Span(i) = corrected.P.p(end) - corrected.P.p(1);
+
+Coercive(i) = getting_percentile_2(corrected, 0.5);
+xline(Coercive(i))
+
+
+title(num2str(Loop_temp(i)))
+
+% pause(0.25)
+
+
 end
 
 
 %%
+load('OLD_data_2Hz.mat')
 
 freq_N = 1;
 

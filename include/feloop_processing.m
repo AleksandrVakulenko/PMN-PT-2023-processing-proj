@@ -1,13 +1,19 @@
 
-function corrected_loop = feloop_processing(feloop, Draw, fig)
+function corrected_loop = feloop_processing(feloop, fig)
 
-if Draw
-    if isempty(fig)
-        figure('position', [466 129 759 846])
-    end
+
+if ~isempty(fig) && class(fig) == "matlab.ui.Figure" && isvalid(fig)
+    Draw = true;
+else
+    Draw = false;
 end
 
+% <<<<<<< HEAD
 % FIRST SAMPLE 001
+% =======
+
+%TODO: load sample struct from feloop
+% >>>>>>> 7fd8134b2430c81a2ade8a9202ea0bfc966ef07d
 Sample.h = 85e-6; %m
 Sample.s = 0.29/1000^2; %m^2
 
@@ -46,18 +52,21 @@ if Draw
     grid on
 end
 
-P.p = P.p - P.p(end)/2;
-P.n = P.n - P.n(end)/2;
+%loop align
+Bias = (P.p(end) - P.p(1))/2;
+P.p = P.p - Bias;
+Bias = (P.n(end) - P.n(1))/2;
+P.n = P.n - Bias;
 
-% units E (was V)
+
+% units E[kV/cm] (was V[V])
 E.p = (E.p/1000) / (Sample.h/0.01);
 E.n = (E.n/1000) / (Sample.h/0.01);
-
-% units P (was Q)
-cap = 100e-9; %F
+% units P[uC/cm^2] (was Q[C])
 P.p = (P.p*1e6)/(Sample.s*100*100); %P [uC/cm2]
 P.n = (P.n*1e6)/(Sample.s*100*100); %P [uC/cm2]
 
+% FIXME: put all misc fields from input loop
 corrected_loop.E = E;
 corrected_loop.P = P;
 
@@ -69,7 +78,8 @@ if Draw
     plot(E.p, P.p, 'r', 'linewidth', 2)
     plot(E.n, P.n, 'b', 'linewidth', 2)
     grid on
-    ylim([-40 40])
+
+    ylim([-40 40]) %FIXME: magic constants
     xlim([-50 50])
 
     xlabel('E, kV/cm', 'fontsize', 12)

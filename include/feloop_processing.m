@@ -7,9 +7,13 @@ if Draw
     end
 end
 
-
+% FIRST SAMPLE 001
 Sample.h = 85e-6; %m
 Sample.s = 0.29/1000^2; %m^2
+
+%SECOND SAMPLE 002
+Sample.h = 100e-6; %m
+Sample.s = (750e-6)*(1000e-6); %m^2
 
 
 Einit = feloop.init.E.p;
@@ -65,8 +69,8 @@ if Draw
     plot(E.p, P.p, 'r', 'linewidth', 2)
     plot(E.n, P.n, 'b', 'linewidth', 2)
     grid on
-%     ylim([-40 40])
-    xlim([-35 35])
+    ylim([-40 40])
+    xlim([-50 50])
 
     xlabel('E, kV/cm', 'fontsize', 12)
     ylabel('P, uC/cm^2', 'fontsize', 12)

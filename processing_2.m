@@ -7,37 +7,63 @@ addpath('include\');
 
 fig = figure('position', [443 80 620 685]);
 
-Coercive = [];
-Span = [];
-
-for i = 1:87
-
-Loops_loc = Loops{i};
 
 
 
-% Temp_range = find(Loop_temp > 100 & Loop_temp < 140);
+
+% Loops_loc = Loops{i};
+
+
+
+Temp_range = find(Loop_temp > 110 & Loop_temp < 280);
 % Temp_range = 1:87;
-Temp_range = 1:numel(Loops);
+% Temp_range = 1:numel(Loops);
 
+Coercive = [];
+Coercive_n = [];
+Span = [];
+i = 0;
+for j = Temp_range
 
-feloop = Loops_loc(3);
+Loops_loc = Loops{j};
+
+feloop = Loops_loc(1);
+
+feloop = feloop.feloop;
 
 feloop = feloop_swap_p_n(feloop);
 corrected = feloop_processing(feloop, fig);
 
+i = i + 1;
 Span(i) = corrected.P.p(end) - corrected.P.p(1);
 
-Coercive(i) = getting_percentile_2(corrected, 0.5);
+[Coercive(i), Coercive_n(i)] = getting_percentile_3(corrected, 0.5);
 xline(Coercive(i))
-
+xline(Coercive_n(i))
+drawnow
 
 title(num2str(Loop_temp(i)))
 
-% pause(0.25)
+pause(0.25)
 
 
 end
+
+
+%%
+
+
+Temp_part = Loop_temp(Temp_range);
+
+figure
+hold on
+plot(Temp_part, Coercive, '.')
+plot(Temp_part, Coercive_n, '.')
+% plot(OLD(:,1), OLD(:,2),'.')
+xlabel('T, K')
+ylabel('Ec, kV/cm')
+
+
 
 
 %%
@@ -48,7 +74,7 @@ freq_N = 1;
 range = Loop_temp > 130;
 Temp_part = Loop_temp(range);
 Coercive_part = Coercive(range, freq_N);
-
+Coercive_part_n = Coercive_n(range, freq_N);
 
 figure
 hold on

@@ -14,9 +14,9 @@ fr_3 = (9:12);
 fr_1 = (13:16);
 fr_05 = (17:20);
 
-for i = 2
+for i = 1:37
     
-for j = 5
+for j = fr_60
 
 Loops_loc = Loops{i};
 feloop = Loops_loc(j);

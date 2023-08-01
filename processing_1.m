@@ -10,9 +10,9 @@ fig = figure('position', [443 80 620 685]);
 Coercive = [];
 Span = [];
 
-% Temp_range = find(Loop_temp > 100 & Loop_temp < 140);
+Temp_range = find(Loop_temp > 140 & Loop_temp < 280);
 % Temp_range = 1:87;
-Temp_range = 1:numel(Loops);
+% Temp_range = 1:numel(Loops);
 
 
 for freq_N = 1%1:20
@@ -28,11 +28,11 @@ for freq_N = 1%1:20
 %     feloop = feloop_full.feloop; % NEW CODE
     
     feloop = feloop_swap_p_n(feloop);
-    corrected = feloop_processing(feloop, true, fig);
+    corrected = feloop_processing(feloop, fig);
     
     Span(i, freq_N) = corrected.P.p(end) - corrected.P.p(1);
     
-    Coercive(i, freq_N) = getting_percentile_2(corrected, 0.5);
+    Coercive(i, freq_N) = getting_percentile_3(corrected, 0.5);
     xline(Coercive(i, freq_N))
     
     
@@ -40,6 +40,49 @@ for freq_N = 1%1:20
     
     pause(0.1)
     
+    end
+
+end
+
+%%
+figure
+hold on
+for freq_N = 8%1:20
+    freq_N
+    for i = Temp_range
+    i
+
+    Loops_loc = Loops{i};
+%     Loops_loc = Loops(i);
+    
+    % HERE USE VERSION CONTROL
+    feloop = Loops_loc(freq_N); % OLD CODE
+%     feloop_full = Loops_loc(freq_N); % NEW CODE
+%     feloop = feloop_full.feloop; % NEW CODE
+    
+    feloop = feloop_swap_p_n(feloop);
+    corrected = feloop_processing(feloop, []);
+    
+    Span(i, freq_N) = corrected.P.p(end) - corrected.P.p(1);
+    Coercive(i, freq_N) = getting_percentile_3(corrected, 0.5);
+    
+    time = (1:numel(corrected.E.p))/1000; %s
+
+    Pn = corrected.P.n;
+    Pn = movmean(Pn, round(numel(Pn)*0.05));
+    current_n = diff(Pn)./diff(time);
+    current_n(end+1) = current_n(end);
+
+    Pp = corrected.P.p;
+    Pp = movmean(Pp, round(numel(Pp)*0.05));
+    current_p = diff(Pp)./diff(time);
+    current_p(end+1) = current_p(end);
+
+    cla
+    plot(corrected.E.n, current_n, '-b')
+    plot(corrected.E.p, current_p, '-r')
+    drawnow
+    pause(0.05);
     end
 
 end

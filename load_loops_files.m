@@ -1,8 +1,8 @@
 addpath('include\')
 
 
-% folder_name = 'Output_results_14-Mar-2023_18_23_37';
-folder_name = 'Output_results_20-Mar-2023_14_44_33';
+folder_name = 'Output_results_14-Mar-2023_18_23_37';
+% folder_name = 'Output_results_20-Mar-2023_14_44_33';
 
 names = find_files(folder_name);
 
@@ -57,13 +57,13 @@ plot(time, res, '-')
 
 figure
 hold on
-plot(temp, res, 'b-')
-plot(temp, PT1000(temp, 'K2R'), '-r')
+plot(time, res, 'b-')
+plot(time, PT1000(temp, 'K2R'), '-r')
 
 figure
 hold on
-plot(time, temp, '-b')
-plot(time, PT1000(res, 'R2K'), '-r')
+plot(time, temp, '-r')
+plot(time, PT1000(res, 'R2K'), '-b')
 
 
 

@@ -21,6 +21,13 @@ Sample.s = 0.29/1000^2; %m^2
 Sample.h = 100e-6; %m
 Sample.s = (750e-6)*(1000e-6); %m^2
 
+
+%SAMPLE PMN-20PT summer 2023 105um!!!!!!!!!!!!!!!!
+Sample.h = 105e-6; %m
+Sample.s = pi*(430e-6)^2; %m^2
+
+
+
 %Первичная, вторичная и итоговая петли для положительной полупетли
 
 Einit = feloop.init.E.p;
@@ -30,13 +37,18 @@ Pref = feloop.ref.P.p;
 E.p = Einit;
 P.p = Pinit - Pref;
 
+LW_init = 2;
+LW_ref = 1;
 if Draw
     subplot(2,1,1)
     cla
     hold on
-    plot(Einit, Pinit, '-b')
-    plot(Eref, Pref, '-r')
-    plot(E.p, P.p, '-g')
+    plot(Einit, Pinit, '-b', 'linewidth', LW_init)
+    plot(E.p, P.p, '-r', 'linewidth', LW_init)
+    plot(Eref, Pref, '-k', 'linewidth', LW_ref)
+    xlabel('v, V', 'fontsize', 12)
+    ylabel('q, C', 'fontsize', 12)
+    legend({'init', 'final', 'ref'}, 'location', 'northwest', 'AutoUpdate', 'off')
 end
 
 %Первичная, вторичная и итоговая петли для отрицательной полупетли
@@ -48,9 +60,9 @@ E.n = Einit;
 P.n = Pinit - Pref;
 
 if Draw
-    plot(Einit, Pinit, '-b')
-    plot(Eref, Pref, '-r')
-    plot(E.n, P.n, '-g')
+    plot(Einit, Pinit, '-b', 'linewidth', LW_init)
+    plot(E.n, P.n, '-r', 'linewidth', LW_init)
+    plot(Eref, Pref, '-k', 'linewidth', LW_ref)
     grid on
 end
 
@@ -73,6 +85,14 @@ E.n = (E.n/1000) / (Sample.h/0.01);
 P.p = (P.p*1e6)/(Sample.s*100*100); %P [uC/cm2]
 P.n = (P.n*1e6)/(Sample.s*100*100); %P [uC/cm2]
 
+% filtering
+number_of_points = numel(E.p);
+% filter_length = round(number_of_points*0.002);
+filter_length = 20;
+E.p = movmean(E.p, filter_length);
+P.p = movmean(P.p, filter_length);
+E.n = movmean(E.n, filter_length);
+P.n = movmean(P.n, filter_length);
 
 % FIXME: put all misc fields from input loop
 % Привычная структура петли
@@ -86,13 +106,20 @@ if Draw
     cla
     hold on
     set(gca, 'fontsize', 11)
-    plot(E.p, P.p, 'r', 'linewidth', 2)
-    plot(E.n, P.n, 'b', 'linewidth', 2)
+
+    P.p(end+1) = P.p(end);
+    E.p(end+1) = 0;
+    P.n(end+1) = P.n(end);
+    E.n(end+1) = 0;
+
+    plot(E.p, P.p, '.r', 'linewidth', 2)
+    plot(E.n, P.n, '.b', 'linewidth', 2)
     grid on
+    
+    x_lim = ceil(max(abs([E.p E.n])/10))*10;
 
-
-    ylim([-40 40]) %FIXME: magic constants
-    xlim([-50 50])
+    ylim([-30 30]) %FIXME: magic constants
+    xlim([-x_lim x_lim])
 
 
     xlabel('E, kV/cm', 'fontsize', 12)

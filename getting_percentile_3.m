@@ -12,6 +12,15 @@ P.p = feloop.P.p;
 
 E.n = -feloop.E.n; %Переворачиваем отрицательную ветвь, чтобы получить верную процентиль
 P.n = -feloop.P.n;
+
+% number_of_points = numel(E.p);
+% filter_length = round(number_of_points*0.05);
+% E.p = movmean(E.p, filter_length);
+% P.p = movmean(P.p, filter_length);
+% 
+% E.n = movmean(E.n, filter_length);
+% P.n = movmean(P.n, filter_length);
+
 Prcn_right = aprox(E.p, P.p, Prcn);
 Prcn_left = -aprox(E.n, P.n, Prcn);
 

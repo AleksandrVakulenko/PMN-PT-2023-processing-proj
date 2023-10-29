@@ -1,3 +1,4 @@
+% FIXME: try to delete this function
 function switch_temp_dependce(Loop_temp, switching, Amp, n)
 subplot(2,2,n);
 hold on

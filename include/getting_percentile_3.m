@@ -1,3 +1,4 @@
+% FIXME: refactor
 function [Prcn_left, Prcn_right]  = getting_percentile_3(feloop, Prcn)
 %На вход прилетает петля и Prcn - процентиль от 0 до 1
 %

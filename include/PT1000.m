@@ -1,5 +1,5 @@
 
-
+% FIXME: refactor
 function output = PT1000(arg, unit)
 R0 = 1000;
 A = 3.9083e-3;

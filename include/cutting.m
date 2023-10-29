@@ -1,3 +1,4 @@
+% FIXME: try to delete this functions
 function [Loop_temp_cut, switching_cut] = cutting(Loop_temp, switching, Amp, garbage_dots)
 %Удаляет точки garbage_dots из массивов. Точки задаются через [] ПО УБЫВАНИЮ!
 Loop_temp_cut =  Loop_temp;

@@ -7,18 +7,22 @@ addpath('include\');
 
 fig = figure('position', [443 80 620 685]);
 
-Coercive = [];
-Span = [];
 
 Temp_range = find(Loop_temp > 140 & Loop_temp < 280);
 % Temp_range = 1:87;
 % Temp_range = 1:numel(Loops);
 
-
-for freq_N = 1%1:20
+Temp_out = [];
+Coercive_p = [];
+Coercive_n = [];
+Span_out = [];
+Period = [];
+for freq_N = 1:8
     freq_N
+    j = 0;
     for i = Temp_range
-    
+    j = j + 1;
+
     Loops_loc = Loops{i};
 %     Loops_loc = Loops(i);
     
@@ -30,17 +34,65 @@ for freq_N = 1%1:20
     feloop = feloop_swap_p_n(feloop);
     corrected = feloop_processing(feloop, fig);
     
-    Span(i, freq_N) = corrected.P.p(end) - corrected.P.p(1);
-    
-    Coercive(i, freq_N) = getting_percentile_3(corrected, 0.5);
-    xline(Coercive(i, freq_N))
+%     Span(i, freq_N) = corrected.P.p(end) - corrected.P.p(1);
+%     Coercive(i, freq_N) = getting_percentile_3(corrected, 0.5);
+
+    Temp_out(freq_N, j) = Loop_temp(i);
+    [Coercive_p(freq_N, j), Coercive_n(freq_N, j)] = getting_percentile_3(corrected, 0.5);
+    Span_out(freq_N, j) = corrected.P.p(end) - corrected.P.p(1);
+    Period(freq_N) = numel(feloop.init.E.n)/1000;
+    xline(Coercive_p(freq_N, j))
+    xline(Coercive_n(freq_N, j))
     
     
     title(num2str(Loop_temp(i)))
     
-    pause(0.1)
+%     pause(0.1)
     
     end
+
+end
+
+%%
+
+Coercive_mean = (-Coercive_p + Coercive_n)/2;
+
+range = 30:59;
+Coercive_mean_cut = Coercive_mean(:, range)';
+Temp_out_cut = Temp_out(:, range)';
+Span_out_cut = Span_out(:, range)';
+
+Temp_out_cut(:,1) = [];
+Coercive_mean_cut(:, 1) = [];
+Period(1) = [];
+%%
+for freq_N = 2:8
+
+Temp = Temp_out_cut(:, freq_N);
+Coercive = Coercive_mean_cut(:, freq_N);
+hold on
+plot(Temp, Coercive, '.r')
+
+% D Eh p
+opts = fitoptions( 'Method', 'NonlinearLeastSquares' );
+opts.Lower = [0 0 1];
+opts.StartPoint = [1 40 1];
+opts.Upper = [10 100 5];
+ft = fittype( 'Eh*(1-x/360)^p + D', 'independent', 'x', 'dependent', 'y' );
+Fit_obj = fit(Temp, Coercive, ft, opts);
+
+plot(Fit_obj, Temp, Coercive);
+
+Fit_result.D = Fit_obj.D;
+Fit_result.p = Fit_obj.p;
+Fit_result.Eh = Fit_obj.Eh;
+Fit_result.temp = Temp;
+Fit_result.coercive = Coercive;
+% Fit_result.freq = period;
+Fitresults.fit_obj = Fit_obj;
+
+% plot(Temp_out_cut, feval(Fit_obj, Temp_out_cut))
+[Fit_result.D, Fit_result.p, Fit_result.Eh]
 
 end
 

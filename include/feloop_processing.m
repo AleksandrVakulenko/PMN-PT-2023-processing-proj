@@ -18,14 +18,21 @@ Sample.s = 0.29/1000^2; %m^2
 
 
 %SECOND SAMPLE 002
-Sample.h = 100e-6; %m
-Sample.s = (750e-6)*(1000e-6); %m^2
+% Sample.h = 100e-6; %m
+% Sample.s = (750e-6)*(1000e-6); %m^2
 
 
-%SAMPLE PMN-20PT summer 2023 105um!!!!!!!!!!!!!!!!
-Sample.h = 105e-6; %m
-Sample.s = pi*(430e-6)^2; %m^2
+% SAMPLE PMN-20PT summer 2023 105um!!!!!!!!!!!!!!!!
+% Sample.h = 105e-6; %m
+% Sample.s = pi*(430e-6)^2; %m^2
 
+% SAMPLE PMN-33PT fall 2023 100um
+% Sample.h = 100e-6; % m
+% Sample.s = 0.003*0.003; % m^2
+
+% PZT-19
+Sample.h = 100e-6; % m
+Sample.s = 880e-6*940e-6; %m^2
 
 
 %Первичная, вторичная и итоговая петли для положительной полупетли
@@ -63,6 +70,8 @@ if Draw
     plot(Einit, Pinit, '-b', 'linewidth', LW_init)
     plot(E.n, P.n, '-r', 'linewidth', LW_init)
     plot(Eref, Pref, '-k', 'linewidth', LW_ref)
+    ylim([-100e-9*10 100e-9*10])
+    xlim([-500 500])
     grid on
 end
 
@@ -87,8 +96,8 @@ P.n = (P.n*1e6)/(Sample.s*100*100); %P [uC/cm2]
 
 % filtering
 number_of_points = numel(E.p);
-% filter_length = round(number_of_points*0.002);
-filter_length = 20;
+filter_length = round(number_of_points*0.002+1);
+% filter_length = 1;
 E.p = movmean(E.p, filter_length);
 P.p = movmean(P.p, filter_length);
 E.n = movmean(E.n, filter_length);
@@ -118,7 +127,7 @@ if Draw
     
     x_lim = ceil(max(abs([E.p E.n])/10))*10;
 
-    ylim([-30 30]) %FIXME: magic constants
+    ylim([-50 50]) %FIXME: magic constants
     xlim([-x_lim x_lim])
 
 

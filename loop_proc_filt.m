@@ -1,11 +1,16 @@
 
 addpath('./include')
 
-% folder = 'Loops_processing/Output_results_24-Jul-2023_17_51_29/'
-% folder = 'Loops_processing/new2/';
-% folder = 'Loops_processing/Output_2023_07_25_LT_3try/';
-% folder = 'Loops_processing/55 temp/';
-folder = 'Results 2023/Results_2023_10_17_PZT_19/loops/';
+
+% % ------ PMN-33PT fall 2023 100um ------
+% folder = 'Results 2023/Results_2023_10_11_PMN_33PT/';
+% Sample.h = 100e-6; % m
+% Sample.s = 0.003*0.003; % m^2
+
+% % ------ PZT-19 ------
+% folder = 'Results 2023/Results_2023_10_17_PZT_19/loops/';
+% Sample.h = 100e-6; % m
+% Sample.s = 880e-6*940e-6; %m^2
 
 names = dir(folder);
 names = {names.name};
@@ -20,7 +25,7 @@ Span = [];
 Span_p = [];
 Span_n = [];
 k = 0;
-for i = 3:4:720 %[3:4:720]
+for i = 1:numel(names)%3:4:720 %[3:4:720]
 N = i;
 load([folder char(names(N))])
 k = k + 1;
@@ -31,7 +36,7 @@ feloop = Loops.feloop;
 
 feloop = loop_pulses_filter(feloop); % filter single pulses in data
 
-corrected = feloop_processing(feloop, fig); %FIXME: WRONG SAMPLE SIZE
+corrected = feloop_processing(feloop, Sample, fig); %FIXME: WRONG SAMPLE SIZE
 
 % Span(k) = max(corrected.P.p) - min(corrected.P.n);
 Span_n(k) = corrected.P.n(end) - corrected.P.n(1);

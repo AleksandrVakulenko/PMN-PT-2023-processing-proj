@@ -1,5 +1,5 @@
 
-function corrected_loop = feloop_processing(feloop, fig)
+function corrected_loop = feloop_processing(feloop, Sample, fig)
 
 
 if ~isempty(fig) && class(fig) == "matlab.ui.Figure" && isvalid(fig)
@@ -11,10 +11,10 @@ end
 
 % FIRST SAMPLE 001
 
-%TODO: load sample struct from feloop
+% NOTE: legacy sample struct (delete)
 
-Sample.h = 85e-6; %m
-Sample.s = 0.29/1000^2; %m^2
+% Sample.h = 85e-6; %m
+% Sample.s = 0.29/1000^2; %m^2
 
 
 %SECOND SAMPLE 002
@@ -31,8 +31,8 @@ Sample.s = 0.29/1000^2; %m^2
 % Sample.s = 0.003*0.003; % m^2
 
 % PZT-19
-Sample.h = 100e-6; % m
-Sample.s = 880e-6*940e-6; %m^2
+% Sample.h = 100e-6; % m
+% Sample.s = 880e-6*940e-6; %m^2
 
 
 %Первичная, вторичная и итоговая петли для положительной полупетли
@@ -70,7 +70,7 @@ if Draw
     plot(Einit, Pinit, '-b', 'linewidth', LW_init)
     plot(E.n, P.n, '-r', 'linewidth', LW_init)
     plot(Eref, Pref, '-k', 'linewidth', LW_ref)
-    ylim([-100e-9*10 100e-9*10])
+%     ylim([-100e-9*10 100e-9*10])
     xlim([-500 500])
     grid on
 end

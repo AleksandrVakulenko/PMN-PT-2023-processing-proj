@@ -1,4 +1,3 @@
-
 function corrected_loop = feloop_processing(feloop, Sample, fig)
 
 
@@ -71,7 +70,7 @@ if Draw
     plot(E.n, P.n, '-r', 'linewidth', LW_init)
     plot(Eref, Pref, '-k', 'linewidth', LW_ref)
 %     ylim([-100e-9*10 100e-9*10])
-    xlim([-500 500])
+%     xlim([-500 500])
     grid on
 end
 
@@ -127,7 +126,7 @@ if Draw
     
     x_lim = ceil(max(abs([E.p E.n])/10))*10;
 
-    ylim([-50 50]) %FIXME: magic constants
+%     ylim([-50 50]) %FIXME: magic constants
     xlim([-x_lim x_lim])
 
 

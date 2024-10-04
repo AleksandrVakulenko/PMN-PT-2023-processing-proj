@@ -3,9 +3,9 @@ addpath('./include')
 
 
 % % ------ PMN-33PT fall 2023 100um ------
-% folder = 'Results 2023/Results_2023_10_11_PMN_33PT/';
-% Sample.h = 100e-6; % m
-% Sample.s = 0.003*0.003; % m^2
+folder = 'Results 2023/Results_2023_10_11_PMN_33PT/';
+Sample.h = 100e-6; % m
+Sample.s = 0.003*0.003; % m^2
 
 % % ------ PZT-19 ------
 % folder = 'Results 2023/Results_2023_10_17_PZT_19/loops/';
@@ -25,16 +25,16 @@ Span = [];
 Span_p = [];
 Span_n = [];
 k = 0;
-for i = 1:numel(names)%3:4:720 %[3:4:720]
+for i = 1:10%numel(names)%3:4:720 %[3:4:720]
 N = i;
 load([folder char(names(N))])
 k = k + 1;
 
-temp(k) = Temp.temp; % K
+temp(k) = Loops.temp; % K
 sample = Loops.sample;
 feloop = Loops.feloop;
 
-feloop = loop_pulses_filter(feloop); % filter single pulses in data
+% feloop = loop_pulses_filter(feloop); % filter single pulses in data
 
 corrected = feloop_processing(feloop, Sample, fig); %FIXME: WRONG SAMPLE SIZE
 
@@ -48,10 +48,46 @@ xline(Coercive_n(k));
 
 
 title([num2str(i) ' T = ' num2str(temp(k)) ' K'])
-xlim([-50 50])
+% xlim([-50 50])
 drawnow
-% pause(0.5)
+pause(0.5)
 end
+
+%% PMN-33PT
+x = temp(range);
+y = Coercive(range);
+
+range = 1:9%numel(temp);
+
+subplot(2, 1, 1)
+hold on
+plot(temp(range), Coercive(range), '.r', 'markersize', 10)
+% plot(temp_c(range), -Coercive_n(range), '.-b')
+xlabel('T, C')
+ylabel('Ec, kV/cm')
+ylim([0 3])
+% xlim([50 600]-273.15)
+% xlim([-200 320])
+
+
+subplot(2, 1, 2)
+plot(temp(range), -Span_n(range), '.b', 'linewidth', 1.5, 'markersize', 10)
+% ylim([0 80])
+xlabel('T, C')
+ylabel('2*Ps, uC/cm^2')
+% xlim([140 500]-273.15)
+% xlim([-200 320])
+
+% hold on
+% y2 = -1.013*x + 73.36;
+% plot(x, y2, '-r', 'linewidth', 1.2)
+
+%%
+
+figure
+plot(Coercive, -Span_n, '.-')
+xlim([0 3])
+ylim([0 50])
 
 
 %%

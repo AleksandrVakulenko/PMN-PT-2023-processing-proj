@@ -1,4 +1,6 @@
-function names = find_files(folder_name)
+% TODO: add sample filter
+
+function names_out = find_files(folder_name)
 
 % find all *.mat files in folder
 content = {dir(folder_name).name};
@@ -15,12 +17,14 @@ names = names(is_mat);
 
 range = false(size(names));
 for i = 1:numel(names)
-    filename = [folder_name '/' char(names(i))];
-    matObj = matfile(filename);
+    full_path = [folder_name '/' char(names(i))];
+    filename = names(i);
+    matObj = matfile(full_path);
     range(i) = isprop(matObj, 'Loops');
-    names(i) = filename;
+    names_out(i).full_path = full_path;
+    names_out(i).filename = filename;
 end
-names = names(range);
+names_out = names_out(range);
 
 
 end

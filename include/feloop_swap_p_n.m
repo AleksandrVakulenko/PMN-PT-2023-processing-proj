@@ -1,4 +1,3 @@
-
 function feloop = feloop_swap_p_n(feloop)
 
 temp = feloop.init.E.p;
